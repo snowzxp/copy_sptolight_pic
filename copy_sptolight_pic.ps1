@@ -1,18 +1,17 @@
 
-# ¼ÓÔØÍ¼ÏñÀà
+# åŠ è½½å›¾åƒç±»
 [system.reflection.assembly]::loadwithpartialname("System.Drawing") | Out-Null
 
-# ÉèÖÃÔ´Ä¿Â¼
-# $env:LOCALAPPDATA ÏµÍ³±äÁ¿,¸ù¾İÖ´ĞĞÓÃ»§¾ö¶¨Ê¹ÓÃ±äÁ¿
+# è®¾ç½®æºç›®å½•
+# $env:LOCALAPPDATA ç³»ç»Ÿå˜é‡,æ ¹æ®æ‰§è¡Œç”¨æˆ·å†³å®šä½¿ç”¨å˜é‡
 # $source_dir = "C:\Users\xxxxxx\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets\"
 $source_dir = Join-Path (Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA "Packages") -Recurse -Filter Microsoft.Windows.ContentDeliveryManager* | ? { $_.PSIsContainer } | % { $_.FullName }) "LocalState\Assets"
 
-# »ñÈ¡µ±Ç°Ä¿Â¼
-# $shell_dir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$shell_dir = ($PWD).Path
+# è·å–å½“å‰ç›®å½•
+$shell_dir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
-# ÉèÖÃÍ¼Æ¬Êä³öÄ¿Â¼ 1Îªºá°åÄ¿Â¼ 2Îª×İ°åÄ¿Â¼
-# ¸ù¾İÍ¼Æ¬×İºá°æÊä³öµ½²»Í¬Ä¿Â¼ Ò²¿ÉÒÔÉèÖÃÏàÍ¬Ä¿Â¼
+# è®¾ç½®å›¾ç‰‡è¾“å‡ºç›®å½• 1ä¸ºæ¨ªæ¿ç›®å½• 2ä¸ºçºµæ¿ç›®å½•
+# æ ¹æ®å›¾ç‰‡çºµæ¨ªç‰ˆè¾“å‡ºåˆ°ä¸åŒç›®å½• ä¹Ÿå¯ä»¥è®¾ç½®ç›¸åŒç›®å½•
 $output_dir1 = Join-Path $shell_dir 'Windows Sptolight'
 $output_dir2 = Join-Path $shell_dir 'Windows Sptolight2'
 
@@ -23,10 +22,10 @@ if (!(Test-Path $output_dir2)) {
   New-Item -ItemType Directory -Force -Path $output_dir2 | Out-Null
 }
 
-# ÉèÖÃÊä³ölogÎÄ¼ş
+# è®¾ç½®è¾“å‡ºlogæ–‡ä»¶
 $logfile = Join-Path $shell_dir 'log_for_sptolight.log'
 
-# »ñÈ¡³¬¹ı100KBµÄÍ¼Æ¬ÎÄ¼şÃû³ÆÁĞ±í
+# è·å–è¶…è¿‡100KBçš„å›¾ç‰‡æ–‡ä»¶åç§°åˆ—è¡¨
 $pic_file_list = Get-ChildItem $source_dir | Where-Object { $_.Length -gt 100kb } | Select-Object Name
 
 # ls variable:
@@ -35,11 +34,11 @@ $copy_file_number = 0
 $skip_file_number_small = 0
 $skip_file_number_same = 0
 
-# ¶ÔÎÄ¼ş½øĞĞ´¦Àí
+# å¯¹æ–‡ä»¶è¿›è¡Œå¤„ç†
 foreach($file in $pic_file_list) {
   $source_file = Join-Path $source_dir $file.name
   
-  # ¶ÔÔ´Í¼Æ¬³¤¿í½øĞĞ¶Ô±ÈÅĞ¶Ï
+  # å¯¹æºå›¾ç‰‡é•¿å®½è¿›è¡Œå¯¹æ¯”åˆ¤æ–­
   $pic_size = New-Object System.Drawing.Bitmap($source_file)
   
   if (($pic_size.height -lt 800) -or ($pic_size.width -lt 800)) {
@@ -55,7 +54,7 @@ foreach($file in $pic_file_list) {
     $output_file = (Join-Path $output_dir2 $file.name) + ".jpg"
   }
   
-  # ÅĞ¶Ï²¢¸´ÖÆÎÄ¼şµ½Ä¿Â¼
+  # åˆ¤æ–­å¹¶å¤åˆ¶æ–‡ä»¶åˆ°ç›®å½•
   if (!(Test-Path $output_file)) {
     Copy-Item $source_file $output_file
     Write-Output "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] source file is: $source_file" | Out-File -Append -FilePath $logfile
