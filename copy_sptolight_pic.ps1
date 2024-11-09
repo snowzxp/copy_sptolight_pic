@@ -5,7 +5,7 @@
 # 设置源目录
 # $env:LOCALAPPDATA 系统变量,根据执行用户决定使用变量
 # $source_dir = "C:\Users\xxxxxx\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets\"
-$source_dir = Join-Path (Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA "Packages") -Recurse -Filter Microsoft.Windows.ContentDeliveryManager* | ? { $_.PSIsContainer } | % { $_.FullName }) "LocalState\Assets"
+$source_dir = Join-Path (Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA "Packages") -Filter Microsoft.Windows.ContentDeliveryManager* | ? { $_.PSIsContainer } | % { $_.FullName }) "LocalState\Assets"
 
 # 获取当前目录
 $shell_dir = Split-Path -Parent $MyInvocation.MyCommand.Definition
